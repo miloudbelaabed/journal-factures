@@ -1,16 +1,23 @@
 import { useEffect, useState } from "react"
 
-import { Table, TableColumnType, Divider } from "antd"
-
+import {
+  Table,
+  TableColumnType,
+  Divider,
+  Modal,
+  Typography,
+  Button,
+} from "antd"
 
 import axios from "axios"
-import { IUser } from "../../interfaces/users"
 import useSearch from "../../hooks/useSearch"
 
 import {
   updateHeaderContentActionCreator,
   useHeader,
 } from "../../contexts/AppContext"
+import { CalculeMontantTTC } from "../../helpers/CalculeTTC"
+import FactureTable from "./Components"
 
 function UsersPage() {
   const { dispatch } = useHeader()
@@ -18,33 +25,42 @@ function UsersPage() {
     dispatch(updateHeaderContentActionCreator("Journales des factures"))
   })
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
+  const [selectedRow, setSelectedRow] = useState([])
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState([])
+  const [isVisible, setIsVisible] = useState(false)
 
   const { getColumnSearchProps } = useSearch()
 
-  const columns: TableColumnType<IUser>[] = [
+  const columns: TableColumnType<any>[] = [
     {
-      title: "Id facture",
+      title: "Facture ID",
       dataIndex: "InvoiceID",
       ...getColumnSearchProps("InvoiceID"),
     },
     {
-      title: "Date facture",
+      title: "Facture Date",
       dataIndex: "InvoiceDate",
       ...getColumnSearchProps("InvoiceDate"),
     },
     {
-      title: "Nom",
+      title: "Client Nom",
       dataIndex: "ClientName",
       ...getColumnSearchProps("ClientName"),
     },
     {
-      title: "Nom du fournisseur",
+      title: "Fournisseur Nom",
       dataIndex: "SupplierName",
       ...getColumnSearchProps("SupplierName"),
     },
+    {
+      title: "Montant TTC",
+      render(value, record, index) {
+        return <p>{CalculeMontantTTC(value.InvoiceItems)}</p>
+      },
+    },
   ]
+
   useEffect(() => {
     setLoading(true)
     axios
@@ -68,7 +84,7 @@ function UsersPage() {
     <div>
       <Divider />
       <Table
-        rowKey="id"
+        rowKey="InvoiceID"
         rowSelection={{
           type: "radio",
           ...rowSelection,
@@ -80,10 +96,40 @@ function UsersPage() {
         dataSource={data}
         onRow={(record, _) => {
           return {
-            onDoubleClick: (ev) => {},
+            onDoubleClick: (ev) => {
+              setIsVisible(true)
+              setSelectedRow(record)
+            },
           }
         }}
       />
+      <Modal
+        style={{ top: 20 }}
+        width={900}
+        title={
+          <>
+            <Typography.Title style={{ margin: 0 }} level={4}>
+              Detail du facture
+            </Typography.Title>
+            <Divider />
+          </>
+        }
+        closable={false}
+        open={isVisible}
+        footer={[
+          <Button
+            key={1}
+            onClick={() => {
+              setIsVisible(false)
+            }}
+          >
+            Fermer
+          </Button>,
+          // <Button key={2}>Enregister</Button>,
+        ]}
+      >
+        <FactureTable data={selectedRow} />
+      </Modal>
     </div>
   )
 }
