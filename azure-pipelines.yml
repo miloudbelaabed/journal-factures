@@ -1,0 +1,43 @@
+# Node.js with React
+
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+pool: 'HERTZNER MACHINE'
+
+steps:
+- task: NodeTool@0
+  inputs:
+    versionSpec: '18.x'
+  displayName: 'Install Node.js'
+
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: '.'
+
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: '.'
+    customCommand: 'run build'
+
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: './dist'
+    includeRootFolder: true
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/reactapp-build.zip'
+    # archiveFile: 'D:/ITSolutions/azagent/A1/_work/r2/a/_FNPOS-InscrptionEnLigneADM-FrontEnd/ReactAppDeploy/reactapp-build.zip'
+    replaceExistingArchive: true
+
+- task: PublishBuildArtifacts@1
+  inputs:
+   pathToPublish: $(Build.ArtifactStagingDirectory)
+  #  pathToPublish: 'D:/ITSolutions/azagent/A1/_work/r2/a/_FNPOS-InscrptionEnLigneADM-FrontEnd/ReactAppDeploy/'
+   artifactName: ReactAppDeploy
+
