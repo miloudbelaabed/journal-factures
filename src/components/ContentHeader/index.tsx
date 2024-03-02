@@ -16,7 +16,7 @@ const styles: { [key: string]: CSSProperties | undefined } = {
   },
 }
 function ContentHeader({ title }: { title: string }) {
-  const { user, isAuthenticated, logout } = useAuth()
+  const { isAuthenticated, logout } = useAuth()
   return (
     <Row justify="center" style={styles.rowContainer}>
       <Col span={13}>
@@ -27,11 +27,11 @@ function ContentHeader({ title }: { title: string }) {
 
       <Col span={10}>
         {isAuthenticated && (
-          <Tag color={COLOR_SECONDARY}>
-            Bienvenue: {user.fullName}
+          <Tag color="#525659">
+            Bienvenue: Admin
             <Button
               style={{
-                backgroundColor: COLOR_SECONDARY,
+                backgroundColor: "#525659",
                 color: "#fff",
                 border: "none",
               }}

@@ -44,12 +44,11 @@ export default function FactureTable({ data }: any) {
     FactureTemplate(data)
   }
   return (
-    <>
+    <div style={{ display: "flex", flexDirection: "column" }}>
       <Button
         style={{
           backgroundColor: COLOR_PRIMARY2,
           margin: 20,
-          alignItems: "center",
         }}
         type="primary"
         onClick={handleClick}
@@ -64,6 +63,6 @@ export default function FactureTable({ data }: any) {
         pagination={false}
         dataSource={data.InvoiceItems}
       />
-    </>
+    </div>
   )
 }

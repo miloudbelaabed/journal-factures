@@ -7,6 +7,10 @@ import {
   Modal,
   Typography,
   Button,
+  Card,
+  Form,
+  Input,
+  Space,
 } from "antd"
 
 import axios from "axios"
@@ -18,17 +22,18 @@ import {
 } from "../../contexts/AppContext"
 import { CalculeMontantTTC } from "../../helpers/CalculeTTC"
 import FactureTable from "./Components"
+import { COLOR_PRIMARY2 } from "../../config/constants"
 
-function UsersPage() {
+function FacturePage() {
   const { dispatch } = useHeader()
   useEffect(() => {
     dispatch(updateHeaderContentActionCreator("Journales des factures"))
   })
-  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([])
   const [selectedRow, setSelectedRow] = useState([])
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState([])
   const [isVisible, setIsVisible] = useState(false)
+  const [formInstance] = Form.useForm()
 
   const { getColumnSearchProps } = useSearch()
 
@@ -72,23 +77,55 @@ function UsersPage() {
         setLoading(false)
       })
   }, [])
-  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
-    setSelectedRowKeys(newSelectedRowKeys)
+  const onFinish = ({ libelle }: { libelle: string }) => {
+    axios
+      .get("data.json")
+      .then((res) => {
+        const result = res.data.filter((invoice) =>
+          invoice.InvoiceItems.some((item) =>
+            item.ItemLibelle.toString()
+              .toLowerCase()
+              .includes((libelle as string).toLowerCase())
+          )
+        )
+
+        setData(result)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
   }
 
-  const rowSelection = {
-    selectedRowKeys,
-    onChange: onSelectChange,
-  }
   return (
     <div>
+      <Card style={{ border: `1px ${COLOR_PRIMARY2} solid` }}>
+        <Form form={formInstance} onFinish={onFinish}>
+          <Form.Item name="libelle" label="Libelle">
+            <Input />
+          </Form.Item>
+          <Space>
+            <Button type="primary" htmlType="submit" loading={loading}>
+              Filtrer
+            </Button>
+            <Button
+              disabled={loading}
+              onClick={() => {
+                formInstance.resetFields()
+
+                axios.get("data.json").then((res) => {
+                  setData(res.data)
+                })
+              }}
+            >
+              Réinitialiser
+            </Button>
+          </Space>
+        </Form>
+      </Card>
+
       <Divider />
       <Table
         rowKey="InvoiceID"
-        rowSelection={{
-          type: "radio",
-          ...rowSelection,
-        }}
         columns={columns}
         loading={loading}
         bordered
@@ -134,4 +171,4 @@ function UsersPage() {
     </div>
   )
 }
-export default UsersPage
+export default FacturePage

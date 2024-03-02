@@ -6,41 +6,31 @@ import { AuthLogin } from "../services/authSerivce"
 
 interface AuthState {
   isAuthenticated: boolean
-  isAdvancedUser: boolean
-  user: any
+
   loginFailure: string[]
 }
 
 const initialState: AuthState = {
-  isAuthenticated: true,
-  isAdvancedUser: false,
-  user: {
-    roles: [],
-    wilayas: [],
-    userName: "",
-    advancedUser: false,
-  },
+  isAuthenticated: false,
+
   loginFailure: [],
 }
 
 interface AuthContextProps extends AuthState {
-  login: (credintials: any) => Promise<boolean>
+  login: (credintials: any) => boolean
   logout: () => void
   loading: boolean
 }
 const AuthContext = createContext<AuthContextProps>({
-  login: () =>
-    new Promise((resolve, _) => {
-      resolve(false)
-    }),
+  login: (cridentials: any) => false,
   logout: () => {},
-  loading: true,
+  loading: false,
   ...initialState,
 })
 
 function AuthProvider({ children }: any) {
   // change this also
-  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(true)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
   const [loading, setLoading] = useState(false)
   const [user, setUser] = useState<any>({
     advancedUser: false,
@@ -50,38 +40,33 @@ function AuthProvider({ children }: any) {
   })
   const [isAppLoading, setIsAppLoading] = useState(true)
 
-  const login = async (credentials: any) => {
+  const login = (credentials: any) => {
     setLoading(true)
-    console.log(credentials)
-    return AuthLogin(credentials)
-      .then((res) => {
-        Modal.success({
-          title: "Connextion succès",
-          content: "Bienvenue dans journal des factures Cosider",
-        })
-        setIsAuthenticated(true)
-        return true
+    const result = AuthLogin(credentials)
+    setLoading(false)
+    if (result) {
+      Modal.success({
+        title: "Connextion succès",
+        content: "Bienvenue dans journal des factures Cosider",
       })
-      .catch((error: any) => {
-        console.log(error)
-        Modal.error({
-          title: "Un problème est survenu lors de la connexion",
-          content: error?.response?.data,
-        })
+      setIsAuthenticated(true)
+      return true
+    }
+    setIsAuthenticated(false)
 
-        // setIsAuthenticated(false)
-        setIsAuthenticated(true)
-
-        return true
-        // return false
-      })
-      .finally(() => setLoading(false))
+    return false
+    Modal.error({
+      title: "Un problème est survenu lors de la connexion",
+      content: error?.response?.data,
+    })
   }
 
   const logout = () => {
     setIsAuthenticated(false)
   }
-
+  useEffect(() => {
+    setIsAppLoading(false)
+  }, [])
   const AuthentificationContext = useMemo(
     () => ({
       login,

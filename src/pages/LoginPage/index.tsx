@@ -25,12 +25,15 @@ function LoginPage() {
 
   const onFinish = async (values: any) => {
     try {
-      const res = await login(values)
+      const res = login(values)
+
       if (res) {
         navigate("/", { replace: true })
+      } else {
+        message.error("Echec : vérifier nom d'utilisateur et mot de pass")
       }
     } catch (error: any) {
-      message.error(error)
+      message.error("Echec : vérifier nom d'utilisateur et mot de pass")
     }
     // finally {
     //   setLoading(false);
@@ -50,7 +53,7 @@ function LoginPage() {
       <Row justify="center" style={styles.rowContainer}>
         <Col span={24}>
           <Typography.Title style={styles.title} level={3}>
-            Application de traitement des inscriptions en ligne FNPOS
+            Journal de facture Cosider
           </Typography.Title>
         </Col>
       </Row>
@@ -83,6 +86,9 @@ function LoginPage() {
               </Typography.Title>
             </Col>
           </Row>
+          <Typography.Text style={{ textAlign: "center", fontWeight: "bold" }}>
+            Username:cosider | Password: cosider
+          </Typography.Text>
           <Form
             onFinish={onFinish}
             labelCol={{ span: 4 }}

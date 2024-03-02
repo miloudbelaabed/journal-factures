@@ -17,27 +17,14 @@ const styles = {
     height: "100px",
   },
   fnposLogo: {
-    width: "100px",
+    width: "200px",
     height: "100px",
-    backgroundImage: "url(./logo-fnpos.png)",
+    backgroundImage: "url(./logo-cosider.png)",
     backgroundSize: "100%",
     backgroundPosition: "center",
     backgroundRepeat: "no-repeat",
   },
-  aps: {
-    width: "100px",
-    height: "100px",
-    backgroundImage: "url(./logo_ministere.png)",
-    backgroundSize: "95%",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  },
-  divider: {
-    minWidth: "100%",
-    margin: "0",
-    backgroundColor: "#ccc",
-    height: "3px",
-  },
+
   items: {
     width: "80%",
     textAlign: "center" as const,
@@ -70,7 +57,7 @@ function NavBar() {
 
         <div style={styles.items}>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <p style={styles.parag}>Journale des factures | Cosider</p>
+            <p style={styles.parag}>Journale des factures</p>
           </div>
         </div>
 
