@@ -121,6 +121,7 @@ function UsersPage() {
             key={1}
             onClick={() => {
               setIsVisible(false)
+              setSelectedRow([])
             }}
           >
             Fermer

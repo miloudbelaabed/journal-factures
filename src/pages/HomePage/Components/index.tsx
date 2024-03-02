@@ -1,6 +1,7 @@
-import { Table, TableColumnType } from "antd"
+import { Button, Space, Table, TableColumnType } from "antd"
 import useSearch from "../../../hooks/useSearch"
 import { CalculeMontantTTCItem } from "../../../helpers/CalculeTTC"
+import FactureTemplate from "../../../helpers/facture"
 
 export default function FactureTable({ data }: any) {
   const { getColumnSearchProps } = useSearch()
@@ -38,13 +39,21 @@ export default function FactureTable({ data }: any) {
       },
     },
   ]
+  function handleClick() {
+    FactureTemplate(data)
+  }
   return (
-    <Table
-      // rowKey="InvoiceID"
-      columns={columns}
-      bordered
-      size="small"
-      dataSource={data.InvoiceItems}
-    />
+    <Space>
+      {JSON.stringify(data)}
+      <Button onClick={handleClick}>Imprimer</Button>
+      <Table
+        // rowKey="InvoiceID"
+        columns={columns}
+        bordered
+        size="small"
+        pagination={false}
+        dataSource={data.InvoiceItems}
+      />
+    </Space>
   )
 }
