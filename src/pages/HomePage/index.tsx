@@ -124,6 +124,7 @@ function FacturePage() {
       </Card>
 
       <Divider />
+      <Typography.Text style={{fontWeight:'bold'}}><b style={{color:"red"}}>Remarque: </b>Double-cliquez sur l'une des lignes du tableau pour consulter la facture en détail et pour l'imprimer.</Typography.Text>
       <Table
         rowKey="InvoiceID"
         columns={columns}

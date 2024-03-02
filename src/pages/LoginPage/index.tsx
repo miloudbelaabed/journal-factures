@@ -53,7 +53,7 @@ function LoginPage() {
       <Row justify="center" style={styles.rowContainer}>
         <Col span={24}>
           <Typography.Title style={styles.title} level={3}>
-            Journal de facture Cosider
+            Journal des factures Cosider
           </Typography.Title>
         </Col>
       </Row>
@@ -126,6 +126,7 @@ function LoginPage() {
                 loading={loading}
                 size="large"
                 type="primary"
+                style={{backgroundColor:COLOR_PRIMARY2}}
                 htmlType="submit"
               >
                 Connexion
