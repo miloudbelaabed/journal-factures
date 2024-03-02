@@ -1,7 +1,8 @@
 import { jsPDF } from "jspdf"
 import autoTable from "jspdf-autotable"
-import { callAddFont } from "./fonts/Calibri Bold-normal.js"
-import { callAddFontCalibriNormal } from "./fonts/Calibri Regular-normal"
+// eslintimport/extensions:0
+import { callAddFont } from "./fonts/Bold-normal.js"
+import { callAddFontCalibriNormal } from "./fonts/Calibri Regular-normal.js"
 import {
   CalculeMontantHT,
   CalculeMontantTTC,

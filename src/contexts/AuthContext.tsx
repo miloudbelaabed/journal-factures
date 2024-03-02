@@ -55,10 +55,6 @@ function AuthProvider({ children }: any) {
     setIsAuthenticated(false)
 
     return false
-    Modal.error({
-      title: "Un problème est survenu lors de la connexion",
-      content: error?.response?.data,
-    })
   }
 
   const logout = () => {

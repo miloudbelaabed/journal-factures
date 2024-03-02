@@ -81,8 +81,8 @@ function FacturePage() {
     axios
       .get("data.json")
       .then((res) => {
-        const result = res.data.filter((invoice) =>
-          invoice.InvoiceItems.some((item) =>
+        const result = res.data.filter((invoice: any) =>
+          invoice.InvoiceItems.some((item: any) =>
             item.ItemLibelle.toString()
               .toLowerCase()
               .includes((libelle as string).toLowerCase())
