@@ -1,7 +1,9 @@
 function CalculeMontantTTC(items: any) {
   let result = 0
   items.forEach((element: any) => {
-    result += element.ItemQuantity * element.ItemPrice + element.ItemTax
+    result +=
+      element.ItemQuantity * element.ItemPrice +
+      element.ItemTax * element.ItemQuantity
   })
 
   return result
@@ -15,6 +17,15 @@ function CalculeMontantTotalSansTax(items: any) {
   return result
 }
 function CalculeMontantTTCItem(item: any) {
-  return item.ItemQuantity * item.ItemPrice + item.ItemTax
+  return item.ItemQuantity * item.ItemPrice + item.ItemTax * item.ItemQuantity
 }
-export { CalculeMontantTTCItem, CalculeMontantTTC, CalculeMontantTotalSansTax }
+function CalculeMontantHT(item: any) {
+  return item.ItemQuantity * item.ItemPrice
+}
+
+export {
+  CalculeMontantTTCItem,
+  CalculeMontantTTC,
+  CalculeMontantTotalSansTax,
+  CalculeMontantHT,
+}
