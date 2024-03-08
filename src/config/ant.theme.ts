@@ -24,6 +24,7 @@ const appTheme: ThemeConfig = {
       colorPrimaryHover: "#458846",
     },
     Table: {},
+    
   },
 }
 

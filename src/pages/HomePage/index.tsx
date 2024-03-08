@@ -11,6 +11,8 @@ import {
   Form,
   Input,
   Space,
+  Row,
+  Col,
 } from "antd"
 
 import axios from "axios"
@@ -29,7 +31,7 @@ function FacturePage() {
   useEffect(() => {
     dispatch(updateHeaderContentActionCreator("Journales des factures"))
   })
-  const [selectedRow, setSelectedRow] = useState([])
+  const [selectedRow, setSelectedRow] = useState(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [data, setData] = useState([])
   const [isVisible, setIsVisible] = useState(false)
@@ -95,10 +97,16 @@ function FacturePage() {
         setLoading(false)
       })
   }
-
+  function handleClose(ev: any) {
+    setSelectedRow(null)
+  }
   return (
     <div>
-      <Card style={{ border: `1px ${COLOR_PRIMARY2} solid` }}>
+      <Card
+        style={{
+          border: `1px ${COLOR_PRIMARY2} solid`,
+        }}
+      >
         <Form form={formInstance} onFinish={onFinish}>
           <Form.Item name="libelle" label="Libelle">
             <Input />
@@ -124,24 +132,67 @@ function FacturePage() {
       </Card>
 
       <Divider />
-      <Typography.Text style={{fontWeight:'bold'}}><b style={{color:"red"}}>Remarque: </b>Double-cliquez sur l'une des lignes du tableau pour consulter la facture en détail et ensuite l'imprimer.</Typography.Text>
-      <Table
-        rowKey="InvoiceID"
-        columns={columns}
-        loading={loading}
-        bordered
-        size="small"
-        dataSource={data}
-        onRow={(record, _) => {
-          return {
-            onDoubleClick: (ev) => {
-              setIsVisible(true)
-              setSelectedRow(record)
-            },
-          }
-        }}
-      />
-      <Modal
+      <Typography.Text style={{ fontWeight: "bold" }}>
+        <b style={{ color: "red" }}>Remarque: </b>Double-cliquez sur l'une des
+        lignes du tableau pour consulter la facture en détail et ensuite
+        l'imprimer.
+      </Typography.Text>
+
+      <Row>
+        <Col span={12}>
+          <Table
+            rowKey="InvoiceID"
+            columns={columns}
+            loading={loading}
+            bordered
+            size="small"
+            dataSource={data}
+            onRow={(record, _) => {
+              return {
+                onDoubleClick: (ev) => {
+                  setIsVisible(true)
+                  setSelectedRow(record)
+                },
+              }
+            }}
+          />
+        </Col>
+        <Col span={1}>
+          <Divider
+            style={{
+              color: "red",
+              backgroundColor: "red",
+              height: "100%",
+              textAlign: "center",
+            }}
+            type="vertical"
+          />
+        </Col>
+        <Col span={11}>
+          {selectedRow !== null ? (
+            <Card>
+              <Row style={{ justifyContent: "space-between" }}>
+                <Col>
+                  <Typography.Title>Detail de facture</Typography.Title>
+                </Col>
+                <Col>
+                  <Button
+                    type="primary"
+                    style={{ backgroundColor: COLOR_PRIMARY2 }}
+                    onClick={handleClose}
+                  >
+                    X
+                  </Button>
+                </Col>
+              </Row>
+
+              <FactureTable data={selectedRow} />
+            </Card>
+          ) : null}
+        </Col>
+      </Row>
+
+      {/* <Modal
         style={{ top: 20 }}
         width={900}
         title={
@@ -168,7 +219,7 @@ function FacturePage() {
         ]}
       >
         <FactureTable data={selectedRow} />
-      </Modal>
+      </Modal> */}
     </div>
   )
 }

@@ -1,5 +1,23 @@
-import { Button, Col, Row, Tag, Typography } from "antd"
+import {
+  Avatar,
+  Button,
+  Col,
+  Dropdown,
+  Row,
+  Space,
+  Tag,
+  Typography,
+} from "antd"
 import { CSSProperties } from "react"
+import {
+  DownOutlined,
+  ProfileOutlined,
+  SettingOutlined,
+  SmileOutlined,
+  UserOutlined,
+} from "@ant-design/icons"
+import { Link } from "react-router-dom"
+import { MenuProps } from "antd/lib"
 import { COLOR_PRIMARY2, COLOR_SECONDARY } from "../../config/constants"
 import { useAuth } from "../../contexts/AuthContext"
 
@@ -15,8 +33,27 @@ const styles: { [key: string]: CSSProperties | undefined } = {
     margin: 0,
   },
 }
+
 function ContentHeader({ title }: { title: string }) {
   const { isAuthenticated, logout } = useAuth()
+  const items: MenuProps["items"] = [
+    {
+      key: "1",
+      label: <Link to="profile">Profile</Link>,
+      icon: <ProfileOutlined />,
+    },
+    {
+      key: "2",
+      label: <Link to="/settings">Settings</Link>,
+      icon: <SettingOutlined />,
+    },
+    {
+      key: "3",
+      label: <a onClick={logout}>Deconnextion</a>,
+      danger: true,
+    },
+  ]
+
   return (
     <Row justify="center" style={styles.rowContainer}>
       <Col span={13}>
@@ -27,21 +64,11 @@ function ContentHeader({ title }: { title: string }) {
 
       <Col span={10}>
         {isAuthenticated && (
-          <Tag color="#525659">
-            Bienvenue: Admin
-            <Button
-              style={{
-                backgroundColor: "#525659",
-                color: "#fff",
-                border: "none",
-              }}
-              onClick={logout}
-            >
-              <Typography.Text underline style={{ color: "white" }}>
-                Déconnexion
-              </Typography.Text>
-            </Button>
-          </Tag>
+          <Dropdown menu={{ items }}>
+            <Space>
+              <Avatar size={45} icon={<UserOutlined />} />
+            </Space>
+          </Dropdown>
         )}
       </Col>
     </Row>
