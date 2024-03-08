@@ -191,35 +191,6 @@ function FacturePage() {
           ) : null}
         </Col>
       </Row>
-
-      {/* <Modal
-        style={{ top: 20 }}
-        width={900}
-        title={
-          <>
-            <Typography.Title style={{ margin: 0 }} level={4}>
-              Detail du facture
-            </Typography.Title>
-            <Divider />
-          </>
-        }
-        closable={false}
-        open={isVisible}
-        footer={[
-          <Button
-            key={1}
-            onClick={() => {
-              setIsVisible(false)
-              setSelectedRow([])
-            }}
-          >
-            Fermer
-          </Button>,
-          // <Button key={2}>Enregister</Button>,
-        ]}
-      >
-        <FactureTable data={selectedRow} />
-      </Modal> */}
     </div>
   )
 }
